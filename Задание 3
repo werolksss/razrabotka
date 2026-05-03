@@ -1,0 +1,39 @@
+#include <iostream>
+using namespace std;
+
+bool isValid(double x) {
+    return !cin.fail();
+}
+
+int main() {
+    double a, b;
+    char op;
+
+    cout << "Введите число a: ";
+    cin >> a;
+    if (!isValid(a)) {
+        cout << "Ошибка ввода!";
+        return 1;
+    }
+
+    cout << "Введите операцию: ";
+    cin >> op;
+
+    cout << "Введите число b: ";
+    cin >> b;
+    if (!isValid(b)) {
+        cout << "Ошибка ввода!";
+        return 1;
+    }
+
+    if (op == '+') cout << a + b;
+    else if (op == '-') cout << a - b;
+    else if (op == '*') cout << a * b;
+    else if (op == '/') {
+        if (b == 0) cout << "Ошибка деления!";
+        else cout << a / b;
+    }
+    else cout << "Ошибка операции";
+
+    return 0;
+}
