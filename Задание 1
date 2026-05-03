@@ -1,0 +1,36 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int extractNumber(string input) {
+    string num = "";
+    bool isNegative = false;
+
+    for (char c : input) {
+        if (c == '-' && num.empty()) {
+            isNegative = true;
+        }
+        if (isdigit(c)) {
+            num += c;
+        }
+    }
+
+    if (num.empty()) return 0;
+
+    int result = stoi(num);
+    return isNegative ? -result : result;
+}
+
+int main() {
+    string input;
+    cout << "Введите значение: ";
+    cin >> input;
+
+    int number = extractNumber(input);
+
+    cout << "Вы ввели: " << number << endl;
+    cout << "Квадрат числа: " << number * number << endl;
+
+    return 0;
+}
