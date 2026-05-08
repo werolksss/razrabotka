@@ -1,0 +1,112 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <limits>
+
+struct Task {
+    std::string description;
+    int priority;
+};
+
+int readTaskCount() {
+    int count;
+
+    while (true) {
+        std::cout << "Введите количество задач: ";
+        std::cin >> count;
+
+        if (std::cin.fail() || count < 0) {
+            std::cout << "Ошибка! Количество задач не может быть отрицательным.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            return count;
+        }
+    }
+}
+
+int readPriority() {
+    int priority;
+
+    while (true) {
+        std::cout << "Введите приоритет задачи от 1 до 5: ";
+        std::cin >> priority;
+
+        if (std::cin.fail() || priority < 1 || priority > 5) {
+            std::cout << "Ошибка! Приоритет должен быть от 1 до 5.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            return priority;
+        }
+    }
+}
+
+std::string readDescription() {
+    std::string description;
+
+    while (true) {
+        std::cout << "Введите описание задачи: ";
+        std::getline(std::cin, description);
+
+        if (description.empty()) {
+            std::cout << "Ошибка! Описание не должно быть пустым.\n";
+        } else if (description.length() > 199) {
+            std::cout << "Ошибка! Описание не должно быть длиннее 199 символов.\n";
+        } else {
+            return description;
+        }
+    }
+}
+
+Task readTask() {
+    Task task;
+
+    task.description = readDescription();
+    task.priority = readPriority();
+
+    return task;
+}
+
+void sortTasksByPriority(std::vector<Task>& tasks) {
+    std::sort(tasks.begin(), tasks.end(), [](const Task& first, const Task& second) {
+        return first.priority > second.priority;
+    });
+}
+
+void printTasks(const std::vector<Task>& tasks) {
+    if (tasks.empty()) {
+        std::cout << "\nСписок задач пуст.\n";
+        return;
+    }
+
+    std::cout << "\nСписок задач:\n";
+
+    for (size_t i = 0; i < tasks.size(); ++i) {
+        std::cout << i + 1 << ". "
+                  << tasks[i].description
+                  << " | Приоритет: "
+                  << tasks[i].priority
+                  << "\n";
+    }
+}
+
+int main() {
+    std::vector<Task> tasks;
+
+    int taskCount = readTaskCount();
+
+    for (int i = 0; i < taskCount; ++i) {
+        std::cout << "\nЗадача №" << i + 1 << "\n";
+        tasks.push_back(readTask());
+    }
+
+    sortTasksByPriority(tasks);
+
+    printTasks(tasks);
+
+    return 0;
+}
